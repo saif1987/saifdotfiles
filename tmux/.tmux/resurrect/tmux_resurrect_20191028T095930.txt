@@ -1,0 +1,13 @@
+pane	0	0	:mainw	1	:*	0	:/home/saif/.tmux/resurrect	1	bash	:
+pane	2	0	:bash	1	:*	0	:/home/saif	1	bash	:
+pane	saifsess	0	:mainw	1	:*	0	:/media/saif/New\ Volume1/GAYOORCV2X	1	vim	:vim ./src/propagation/model/UCF-propagation-loss-model.cc
+pane	saifsess	0	:mainw	1	:*	1	:/home/saif/Downloads/gcc-5.4-deb	0	bash	:
+pane	saifsess	1	:new-win	0	:	0	:/home/saif	1	bash	:
+pane	saifsess	2	:steinwin	0	:-	0	:/home/saif	1	bash	:
+pane	saifsess	2	:steinwin	0	:-	1	:/media/saif/New\ Volume1/GAYOORCV2X/Output/CV2X_50_4800m_16l_nocc/5048006/Logs	0	bash	:
+window	0	0	1	:*	b25e,80x24,0,0,1
+window	2	0	1	:*	bd63,211x54,0,0,6
+window	saifsess	0	1	:*	d6fc,211x54,0,0{125x54,0,0,2,85x54,126,0,4}
+window	saifsess	1	0	:	bd62,211x54,0,0,5
+window	saifsess	2	0	:-	a762,211x54,0,0{143x54,0,0,7,67x54,144,0,13}
+state	saifsess	

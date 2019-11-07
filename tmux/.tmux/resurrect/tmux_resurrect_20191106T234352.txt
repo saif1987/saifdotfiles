@@ -1,0 +1,6 @@
+pane	0	0	:~	1	:*	0	:/home/saif	1	zsh	:
+pane	1	0	:vim	1	:*	0	:/home/saif/saifdotfiles/tmux	1	vimdiff	:vimdiff .tmux.conf /home/saif/.tmux.conf
+pane	1	0	:vim	1	:*	1	:/home/saif/saifdotfiles	0	vim	:vim /home/saif/.tmux.conf
+window	0	0	1	:*	b25d,80x24,0,0,0
+window	1	0	1	:*	e47f,211x54,0,0{105x54,0,0,1,105x54,106,0,3}
+state	1	

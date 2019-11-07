@@ -1,0 +1,15 @@
+pane	0	0	:mainw	1	:*	0	:/home/saif/.tmux/resurrect	1	zsh	:
+pane	2	0	:bash	1	:*	0	:/home/saif	1	zsh	:
+pane	3	0	:10.173.215.222	1	:*	0	:/home/saif	1	ssh	:ssh 10.173.215.222
+pane	saifsess	0	:mainw	0	:-	0	:/home/saif	0	vim	:vim nist-lte-phy-error-model.cc
+pane	saifsess	0	:mainw	0	:-	1	:/home/saif/Downloads/gcc-5.4-deb	1	zsh	:
+pane	saifsess	1	:new-win	0	:	0	:/home/saif	1	zsh	:
+pane	saifsess	2	:steinwin	1	:*	0	:/home/saif	1	zsh	:
+pane	saifsess	2	:steinwin	1	:*	1	:/home/saif	0	zsh	:
+window	0	0	1	:*	b25e,80x24,0,0,1
+window	2	0	1	:*	b25f,80x24,0,0,2
+window	3	0	1	:*	bd65,211x54,0,0,8
+window	saifsess	0	0	:-	13e3,80x24,0,0{59x24,0,0,3,20x24,60,0,4}
+window	saifsess	1	0	:	b262,80x24,0,0,5
+window	saifsess	2	1	:*	0031,80x24,0,0{77x24,0,0,6,2x24,78,0,7}
+state	3	

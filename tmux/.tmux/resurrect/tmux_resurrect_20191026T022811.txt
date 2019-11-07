@@ -1,0 +1,7 @@
+pane	saifsess	0	:mainw	1	:*	0	:/media/saif/New\ Volume1	1	python	:/usr/bin/python -O /usr/bin/ranger
+pane	saifsess	0	:mainw	1	:*	1	:/home/saif	0	bash	:
+pane	saifsess	0	:mainw	1	:*	2	:/home/saif	0	bash	:
+pane	saifsess	1	:new-win	0	:-	0	:/home/saif	1	bash	:
+window	saifsess	0	1	:*	be65,211x54,0,0{104x54,0,0[104x33,0,0,0,104x20,0,34,4],106x54,105,0,3}
+window	saifsess	1	0	:-	bd5e,211x54,0,0,1
+state	saifsess	

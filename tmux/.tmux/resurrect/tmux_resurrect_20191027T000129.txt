@@ -1,0 +1,9 @@
+pane	0	0	:mainw	1	:*	0	:/home/saif/.tmux/resurrect	1	bash	:
+pane	saifsess	0	:mainw	1	:*	0	:/media/saif/New\ Volume1/GAYOORCV2X/Output/CV2X_50_4800m_16l_nocc/5048006/Logs	0	python	:/usr/bin/python -O /usr/bin/ranger
+pane	saifsess	0	:mainw	1	:*	1	:/media/saif/New\ Volume1/GAYOORCV2X	1	bash	:
+pane	saifsess	0	:mainw	1	:*	2	:/home/saif/Downloads/gcc-5.4-deb	0	bash	:
+pane	saifsess	1	:new-win	0	:-	0	:/home/saif	1	bash	:
+window	0	0	1	:*	bd5d,211x54,0,0,0
+window	saifsess	0	1	:*	ff28,211x54,0,0{125x54,0,0[125x15,0,0,1,125x38,0,16,2],85x54,126,0,3}
+window	saifsess	1	0	:-	bd61,211x54,0,0,4
+state	saifsess	0

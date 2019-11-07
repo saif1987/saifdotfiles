@@ -1,0 +1,5 @@
+pane	0	0	:~	1	:*	0	:/home/saif	1	zsh	:
+pane	1	0	:~/saifdotfiles	1	:*	0	:/home/saif/saifdotfiles	1	zsh	:
+window	0	0	1	:*	b25d,80x24,0,0,0
+window	1	0	1	:*	bd5e,211x54,0,0,1
+state	1	
