@@ -29,5 +29,6 @@ set expandtab
 set rnu 
 filetype indent on
 set autoindent
+set tags=tags
 
 let python_highlight_all = 1
