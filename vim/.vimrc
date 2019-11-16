@@ -34,6 +34,7 @@ set expandtab
 set rnu 
 filetype indent on
 set autoindent
+set tags=tags
 
 set clipboard=unnamed
 
