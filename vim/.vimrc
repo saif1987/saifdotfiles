@@ -1,5 +1,10 @@
 set nocompatible              " required
-filetype off                  " required
+filetype plugin on            " required
+
+"Search down into subfolders
+"provides tab-completion for all file-related tasks
+set path+=**
+set wildmenu
 
 " set the runtime path to include Vundle and initialize
 set rtp+=$HOME/saifdotfiles/vim/.vim/bundle/Vundle.vim
@@ -30,4 +35,12 @@ set rnu
 filetype indent on
 set autoindent
 
+set clipboard=unnamed
+
+
+
 let python_highlight_all = 1
+
+" CreateTags
+command! MakeTags !ctags -R
+command! MakeCppTags !ctags -R --c++-kinds=+p --fields=+iaS --extra=+q . 
