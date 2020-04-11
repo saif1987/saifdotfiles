@@ -1,5 +1,5 @@
 set nocompatible              " required
-filetype plugin on            " required
+filetype plugin off            " required
 
 "Search down into subfolders
 "provides tab-completion for all file-related tasks
@@ -18,7 +18,7 @@ Plugin 'VundleVim/Vundle.vim'
 
 " add all your plugins here (note older versions of Vundle
 " used Bundle instead of Plugin)
-
+Plugin 'chrisbra/csv.vim'
 " ...
 
 " All of your Plugins must be added before the following line
