@@ -16,10 +16,33 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
 
+" colorscheme set
+colorscheme gruvbox
+
+"
+" add to .vimrc
+Plugin 'flazz/vim-colorschemes'
+
+"
 " add all your plugins here (note older versions of Vundle
 " used Bundle instead of Plugin)
 Plugin 'chrisbra/csv.vim'
+
+
+" fzf plugin
+"
+"
+"
+Plugin 'junegunn/fzf' ", { 'do': { -> fzf#install() } }
+Plugin 'junegunn/fzf.vim'
+
 " ...
+Plugin 'Valloric/YouCompleteMe'
+
+
+"For switching betwen .c and .h
+Plugin 'derekwyatt/vim-fswitch'
+
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -38,6 +61,7 @@ set tabstop=4
 set shiftwidth=4
 set expandtab
 set rnu 
+set nu
 filetype indent on
 set autoindent
 set tags=tags
