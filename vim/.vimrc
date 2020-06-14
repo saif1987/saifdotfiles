@@ -132,6 +132,10 @@ Plugin 'tmhedberg/matchit'
 
 "For switching betwen .c and .h
 Plugin 'derekwyatt/vim-fswitch'
+"Plugin 'lokaltog/vim-powerline'
+Plugin 'bling/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+let g:airline_powerline_fonts = 1
 
 
 " All of your Plugins must be added before the following line
