@@ -280,7 +280,58 @@ function! JumpToInSplit(jumpcommand)
     Pulse
 endfunction
 
+
+""Trying to make it better
+"function! JumpToTag2()
+"  " try to find a word under the cursor
+"  let current_word = expand("<cword>")
+"
+"  " check if there is one
+"  if current_word == ''
+"    echomsg "No word under the cursor"
+"    return
+"  endif
+"
+"  " find all tags for the given word
+"  let tags = taglist('^'.current_word.'$')
+"
+"  " if no tags are found, bail out
+"  if empty(tags)
+"    echomsg "No tags found for: ".current_word
+"    return
+"  endif
+"
+"  " take the first tag, or implement some more complicated logic here
+"  let selected_tag = tags[0]
+"  echo selected_tag.filename
+""  let spfilename = split(selected_tag.filename,".")
+""  echo len(spfilename) 
+" " let tag0ftype = expand(selected_tag.filename.':e') "spfilename[len(spfilename)-1]
+"  echo "Expand"+expand(selected_tag.filename)
+" " echo "FileType: "+tag0ftype
+" " if tag0ftype=="h"
+" "       for tgi in tags
+" "       	let spfilename = split(tgi.filename,".")
+" "       	let tagiftype = spfilename[len(spfilename)-1]
+" "       	if (tagiftype==?"c")|(tagiftype==?"cc")
+" "       		selected_tag = tgi
+" "       		break
+" "       	endif
+" "       
+" "       endfor
+" " endif
+"  echomsg "Openning file "+selected_tag.filename
+""split("one,two,three", ",")
+"  " edit the relevant file, jump to the tag's position
+"  exe 'edit '.selected_tag.filename
+"  exe selected_tag.cmd
+"endfunction
+
+
+
 function! JumpToTag()
+    echo "Called JumpToTag"
+    "return
     call JumpTo("normal! \<c-]>")
 endfunction
 function! JumpToTagInSplit()
@@ -307,6 +358,19 @@ vnoremap L g_
 
 "Try to use fzf for last search
 
+
+
+"Open FZF file open remap
+nnoremap <C-p> :Files<Cr>
+nmap <Leader>b :Buffers<CR>
+nmap <Leader>h :History<CR>
+nmap <Leader>l :BLines<CR>
+nmap <Leader>L :Lines<CR>
+nmap <Leader>' :Marks<CR>
+nmap <Leader>t :BTags<CR>
+"nmap <Leader>T :Tags<CR> "I think global tag search can be done by command
+"nmap <Leader>T :call fzf#vim#tags({'options': '-q'.shellescape(expand('<cword>'))})<CR>
+nnoremap <silent><Leader>T :Tags <C-R>=expand("<cword>")<CR><CR>
 
 "}}}
 
