@@ -165,8 +165,9 @@ fi
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias vim='nvim -S ~/.vimrc'
+#alias vim='nvim -S ~/.vimrc'
 alias svim='nvim -u ~/.SpaceVim/vimrc'
+alias rvim=' vim -S ./.vimrc' 
 #Autojump instruction
 [[ -s /home/saif/.autojump/etc/profile.d/autojump.sh ]] && source /home/saif/.autojump/etc/profile.d/autojump.sh
 autoload -U compinit && compinit -u

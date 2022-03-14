@@ -167,9 +167,22 @@ call vundle#end()            " required
 filetype plugin indent on    " required
 
 "}}}
-" LeaderKey{{{
-let mapleader = " "
-let maplocalleader = " "
+" LeaderKey and execution key{{{
+let mapleader = "\<space>"
+let maplocalleader = "\<space>"
+"Increase timeoutlen when <Leader> is pressed
+" Only one of these lines is needed.  I am not sure which is most recommended.
+"nmap <silent> <Leader> :<C-U>set timeoutlen=99999 ttimeoutlen=99999<CR><Leader>
+
+nnoremap <silent> <Leader> :<C-U>set timeoutlen=99999 ttimeoutlen=99999<CR>:call feedkeys('<Leader>')<CR>
+
+" Reset timeoutline to normal soon afterwards
+autocmd CursorMoved * set timeoutlen=2000 ttimeoutlen=0
+" Change execution key from : to ;
+nnoremap ; :
+nnoremap : ;
+vnoremap ; :
+vnoremap : ;
 "}}}
 
 
@@ -295,15 +308,19 @@ nnoremap <c-o> <c-o>zz
 
 "netrw setup{{{
 "mouse enable
-"set mouse =a
+ set mouse =a
 "hide banner
-"let g:netrw_banner=0
+ let g:netrw_banner=0
 "tree listing 
-"let g:netrw_liststyle=3
+ let g:netrw_liststyle=3
 "hide vim swap files
-"let g:netrw_list_hide='.*\.swp$'
+ let g:netrw_list_hide='.*\.swp$'
 "Open file on left window
-"let g:netrw_chgwin=1
+ let g:netrw_chgwin=1
+"Other
+ let g:netrw_browse_split = 4
+let g:netrw_altv = 1
+let g:netrw_winsize = 20
 " remap shift-enter to fire up the sidebar
 "nnoremap <silent> <S-CR> :rightbelow 20vs<CR>:e .<CR>
 " the same remap as above - may be necessary in some distros
@@ -312,8 +329,14 @@ nnoremap <c-o> <c-o>zz
 "nmap <silent> <C-CR> t :rightbelow 20vs<CR>:e .<CR>:wincmd h<CR>
 " the same remap as above - may be necessary in some distros
 "nmap <silent> <NL> t :rightbelow 20vs<CR>:e .<CR>:wincmd h<CR>
+"
+
+" augroup ProjectDrawer
+"   autocmd!
+"   autocmd VimEnter * :Vexplore
+" augroup 
 "open file in new tab 
-"let g:NetrwIsOpen=0
+ let g:NetrwIsOpen=0
 
 function! ToggleNetrw()
     if g:NetrwIsOpen
@@ -332,7 +355,7 @@ function! ToggleNetrw()
 endfunction
 
 " Add your own mapping. For example:
-noremap <silent> <Leader>f :call ToggleNetrw()<CR>
+noremap <silent> <Leader>p :call ToggleNetrw()<CR>
 
 
 
@@ -409,13 +432,13 @@ set virtualedit+=block      "lets place cursor anywhere in visual mode
 noremap <silent> <leader><space> :noh<cr>:call clearmatches()<cr>
 " Press * to search for the term under the cursor or a visual selection and
 " then press a key below to replace all instances of it in the current file.
-nnoremap <Leader>r :%s///g<Left><Left>
+nnoremap <Leader>ra :%s///g<Left><Left>
 nnoremap <Leader>rc :%s///gc<Left><Left><Left>
 " The same as above but instead of acting on the whole file it will be
 " restricted to the previously visually selected range. You can do that by
 " pressing *, visually selecting the range you want it to apply to and then
 " press a key below to replace all instances of it in the current selection.
-xnoremap <Leader>r :s///g<Left><Left>
+xnoremap <Leader>ra :s///g<Left><Left>
 xnoremap <Leader>rc :s///gc<Left><Left><Left>
 
 
@@ -430,19 +453,19 @@ nnoremap D d$
 noremap H ^
 noremap L $
 vnoremap L g_
-
+"
 "Try to use fzf for last search
 
 
 
 "Open FZF file open remap
-nnoremap <C-p> :Files<Cr>
-nmap <Leader>b :Buffers<CR>
-nmap <Leader>h :History<CR>
-nmap <Leader>l :BLines<CR>
-nmap <Leader>L :Lines<CR>
-nmap <Leader>' :Marks<CR>
-nmap <Leader>t :BTags<CR>
+nnoremap <Leader>f :Files<CR>
+nnoremap <Leader>b  :Buffers<CR>
+nnoremap <Leader>h  :History<CR>
+nnoremap <Leader>l  :BLines<CR>
+nnoremap <Leader>L :Lines<CR>
+nnoremap <Leader>' :Marks<CR>
+nnoremap <Leader>t  :BTags<CR>
 "nmap <Leader>T :Tags<CR> "I think global tag search can be done by command
 "nmap <Leader>T :call fzf#vim#tags({'options': '-q'.shellescape(expand('<cword>'))})<CR>
 nnoremap <silent><Leader>T :Tags <C-R>=expand("<cword>")<CR><CR>
@@ -503,6 +526,15 @@ nnoremap gl <C-w><C-l>
 nnoremap gh <C-w><C-h>
 nnoremap gk <C-w><C-k>
 nnoremap gj <C-w><C-j>
+"}}}
+"Insert mode navigation{{{
+"inoremap <C-l> <C-O>gl
+"inoremap <C-h> <C-O>gh
+"inoremap <C-k> <C-O>gk
+"inoremap <C-j> <C-O>gj
+"}}}
+"Refresh vimrc {{{
+  noremap <Leader>R  :so /home/saif/.vimrc<CR>
 "}}}
 "Many Functions are from https://bitbucket.org/sjl/dotfiles/src/tip/vim/vimrc]
 "Some Vimrc to look into: nickjj/dotfiles/blob/master/.vimrc
