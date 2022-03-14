@@ -138,20 +138,44 @@ Plugin 'vim-airline/vim-airline-themes'
 let g:airline_powerline_fonts = 1
 
 
+" c related works : need to explain
+Plugin 'c.vim'
+
+" Ctag related bar : Code Outline
+Plugin 'preservim/tagbar'
+
+" Briefly highlight Yank
+"Plugin 'machakann/vim-highlightedyank'
+
+" Automatically clear search highlights after you move your cursor.
+Plugin 'haya14busa/is.vim'
+
+" Better display unwanted whitespace.
+Plugin 'ntpeters/vim-better-whitespace'
+
+" Toggle comments in various ways.
+Plugin 'tpope/vim-commentary'
+
+" Automatically show Vim's complete menu while typing.
+Plugin 'vim-scripts/AutoComplPop'
+
+"Plugin 'unblevable/quick-scope' "highlights f F t T jump list
+"Plugin 'neoclide/coc.nvim'
+
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
 
 "}}}
 " LeaderKey{{{
-let mapleader = ","
-let maplocalleader = "\\"
+let mapleader = " "
+let maplocalleader = " "
 "}}}
 
 
-
+"Clipboard related {{{
 set clipboard=unnamed
-
+"}}}
 
 " colorscheme set{{{
 set t_Co=256
@@ -160,104 +184,19 @@ colorscheme gruvbox
 set background=dark    " Setting dark mode
 let python_highlight_all = 1
 "}}}
-" CreateTags{{{
+
+" Tag and Tagbar setup{{{
+
+" CreateTags
+
 set tags=tags
 command! MakeTags !ctags -R
 command! MakeCppTags !ctags -R --c++-kinds=+p --fields=+iaS --extra=+q . 
-"}}}
-"netrw setup{{{
-"mouse enable
-"set mouse =a
-"hide banner
-"let g:netrw_banner=0
-"tree listing 
-"let g:netrw_liststyle=3
-"hide vim swap files
-"let g:netrw_list_hide='.*\.swp$'
-"Open file on left window
-"let g:netrw_chgwin=1
-" remap shift-enter to fire up the sidebar
-"nnoremap <silent> <S-CR> :rightbelow 20vs<CR>:e .<CR>
-" the same remap as above - may be necessary in some distros
-"nnoremap <silent> <C-M> :rightbelow 20vs<CR>:e .<CR>
-" remap control-enter to open files in new tab
-"nmap <silent> <C-CR> t :rightbelow 20vs<CR>:e .<CR>:wincmd h<CR>
-" the same remap as above - may be necessary in some distros
-"nmap <silent> <NL> t :rightbelow 20vs<CR>:e .<CR>:wincmd h<CR>
-"}}}
-"Folding Setup {{{
-set foldmethod=marker
-" Space to toggle folds.
-nnoremap <Space> za
-vnoremap <Space> za
-" Make zO recursively open whatever fold we're in, even if it's partially open.
-nnoremap zO zczO
-
-" "Focus" the current line.  Basically:
-"
-" 1. Close all folds.
-" 2. Open just the folds containing the current line.
-" 3. Move the line to a bit (25 lines) down from the top of the screen.
-" 4. Pulse the cursor line.  My eyes are bad. /saif I disabled this part for now
-"
-" This mapping wipes out the z mark, which I never use.
-"
-" I use :sus for the rare times I want to actually background Vim.
-function! FocusLine()
-    let oldscrolloff = &scrolloff
-    set scrolloff=0
-    execute "keepjumps normal! mzzMzvzt25\<c-y>`z:Pulse\<cr>"
-    let &scrolloff = oldscrolloff
-endfunction
-nnoremap <c-z> :call FocusLine()<cr>
-
-function! MyFoldText() " {{{
-    let line = getline(v:foldstart)
-
-    let nucolwidth = &fdc + &number * &numberwidth
-    let windowwidth = winwidth(0) - nucolwidth - 3
-    let foldedlinecount = v:foldend - v:foldstart
-
-    " expand tabs into spaces
-    let onetab = strpart('          ', 0, &tabstop)
-    let line = substitute(line, '\t', onetab, 'g')
-
-    let line = strpart(line, 0, windowwidth - 2 -len(foldedlinecount))
-    let fillcharcount = windowwidth - len(line) - len(foldedlinecount)
-    return '[+]' . line . '…' . repeat(" ",fillcharcount-4) . foldedlinecount . '…' . ' '
-endfunction " }}}
-set foldtext=MyFoldText()
 
 
 
-"}}}
-" Searching and movement -------------------------------------------------- {{{
-
-" Use sane regexes.
-nnoremap / /\v
-vnoremap / /\v
-
-set ignorecase
-set smartcase
-set incsearch
-set showmatch
-set hlsearch
-"set gdefault   "substitues globally w/o /g. and g makes one sub. I disabled it.
-set scrolloff=5
-set sidescroll=1
-set sidescrolloff=10
-
-set virtualedit+=block      "lets place cursor anywhere in visual mode
-
-"leader <,> and Space for clear matches
-noremap <silent> <leader><space> :noh<cr>:call clearmatches()<cr>
-
-"map <tab> %
-"silent! unmap [%
-"silent! unmap ]%
-
-" Made D behave
-nnoremap D d$
+" Add Tagbar hotkey to Leader g
+ noremap <silent> <Leader>g :TagbarToggle<CR>
 
 " Jumping to tags.
 "
@@ -350,6 +289,142 @@ nnoremap g; g;zz
 nnoremap g, g,zz
 nnoremap <c-o> <c-o>zz
 
+
+
+"}}}
+
+"netrw setup{{{
+"mouse enable
+"set mouse =a
+"hide banner
+"let g:netrw_banner=0
+"tree listing 
+"let g:netrw_liststyle=3
+"hide vim swap files
+"let g:netrw_list_hide='.*\.swp$'
+"Open file on left window
+"let g:netrw_chgwin=1
+" remap shift-enter to fire up the sidebar
+"nnoremap <silent> <S-CR> :rightbelow 20vs<CR>:e .<CR>
+" the same remap as above - may be necessary in some distros
+"nnoremap <silent> <C-M> :rightbelow 20vs<CR>:e .<CR>
+" remap control-enter to open files in new tab
+"nmap <silent> <C-CR> t :rightbelow 20vs<CR>:e .<CR>:wincmd h<CR>
+" the same remap as above - may be necessary in some distros
+"nmap <silent> <NL> t :rightbelow 20vs<CR>:e .<CR>:wincmd h<CR>
+"open file in new tab 
+"let g:NetrwIsOpen=0
+
+function! ToggleNetrw()
+    if g:NetrwIsOpen
+        let i = bufnr("$")
+        while (i >= 1)
+            if (getbufvar(i, "&filetype") == "netrw")
+                silent exe "bwipeout " . i 
+            endif
+            let i-=1
+        endwhile
+        let g:NetrwIsOpen=0
+    else
+        let g:NetrwIsOpen=1
+        silent Lexplore
+    endif
+endfunction
+
+" Add your own mapping. For example:
+noremap <silent> <Leader>f :call ToggleNetrw()<CR>
+
+
+
+
+
+
+
+"}}}
+"Folding Setup {{{
+set foldmethod=marker
+" Space to toggle folds.
+nnoremap <Leader>z za
+vnoremap <Leader>z za
+" Make zO recursively open whatever fold we're in, even if it's partially open.
+nnoremap zO zczO
+
+" "Focus" the current line.  Basically:
+"
+" 1. Close all folds.
+" 2. Open just the folds containing the current line.
+" 3. Move the line to a bit (25 lines) down from the top of the screen.
+" 4. Pulse the cursor line.  My eyes are bad. /saif I disabled this part for now
+"
+" This mapping wipes out the z mark, which I never use.
+"
+" I use :sus for the rare times I want to actually background Vim.
+function! FocusLine()
+    let oldscrolloff = &scrolloff
+    set scrolloff=0
+    execute "keepjumps normal! mzzMzvzt25\<c-y>`z:Pulse\<cr>"
+    let &scrolloff = oldscrolloff
+endfunction
+nnoremap <c-z> :call FocusLine()<cr>
+
+function! MyFoldText() " {{{
+    let line = getline(v:foldstart)
+
+    let nucolwidth = &fdc + &number * &numberwidth
+    let windowwidth = winwidth(0) - nucolwidth - 3
+    let foldedlinecount = v:foldend - v:foldstart
+
+    " expand tabs into spaces
+    let onetab = strpart('          ', 0, &tabstop)
+    let line = substitute(line, '\t', onetab, 'g')
+
+    let line = strpart(line, 0, windowwidth - 2 -len(foldedlinecount))
+    let fillcharcount = windowwidth - len(line) - len(foldedlinecount)
+    return '[+]' . line . '…' . repeat(" ",fillcharcount-4) . foldedlinecount . '…' . ' '
+endfunction " }}}
+set foldtext=MyFoldText()
+
+
+
+"}}}
+" Search and Replace and movement -------------------------------------------------- {{{
+
+" Use sane regexes.
+nnoremap / /\v
+vnoremap / /\v
+
+set ignorecase
+set smartcase
+set incsearch
+set showmatch
+set hlsearch
+"set gdefault   "substitues globally w/o /g. and g makes one sub. I disabled it.
+set scrolloff=5
+set sidescroll=1
+set sidescrolloff=10
+
+set virtualedit+=block      "lets place cursor anywhere in visual mode
+
+"leader <,> and Space for clear matches
+noremap <silent> <leader><space> :noh<cr>:call clearmatches()<cr>
+" Press * to search for the term under the cursor or a visual selection and
+" then press a key below to replace all instances of it in the current file.
+nnoremap <Leader>r :%s///g<Left><Left>
+nnoremap <Leader>rc :%s///gc<Left><Left><Left>
+" The same as above but instead of acting on the whole file it will be
+" restricted to the previously visually selected range. You can do that by
+" pressing *, visually selecting the range you want it to apply to and then
+" press a key below to replace all instances of it in the current selection.
+xnoremap <Leader>r :s///g<Left><Left>
+xnoremap <Leader>rc :s///gc<Left><Left><Left>
+
+
+"map <tab> %
+"silent! unmap [%
+"silent! unmap ]%
+
+" Made D behave
+nnoremap D d$
 "This part I took Just because its convincing
 " Easier to type, and I never use the default behavior.
 noremap H ^
@@ -374,6 +449,11 @@ nnoremap <silent><Leader>T :Tags <C-R>=expand("<cword>")<CR><CR>
 
 "}}}
 
+"Autocomplete setup{{{
+"-------------------------------------------------------------------
+set completeopt=menuone,longest
+set shortmess+=c
+"}}}
 
 " Pulse Line  {{{
 
@@ -408,4 +488,21 @@ command! -nargs=0 Pulse call s:Pulse()
 " }}}
 
 
+"wrap related Settings{{{
+" Seamlessly treat visual lines as actual lines when moving around.
+noremap j gj
+noremap k gk
+noremap <Down> gj
+noremap <Up> gk
+inoremap <Down> <C-o>gj
+inoremap <Up> <C-o>gk
+"}}}
+"Window navigation {{{
+" Navigate around splits with a single key combo.
+nnoremap gl <C-w><C-l>
+nnoremap gh <C-w><C-h>
+nnoremap gk <C-w><C-k>
+nnoremap gj <C-w><C-j>
+"}}}
 "Many Functions are from https://bitbucket.org/sjl/dotfiles/src/tip/vim/vimrc]
+"Some Vimrc to look into: nickjj/dotfiles/blob/master/.vimrc
