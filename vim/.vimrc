@@ -477,7 +477,9 @@ nnoremap <silent><Leader>T :Tags <C-R>=expand("<cword>")<CR><CR>
 set completeopt=menuone,longest
 set shortmess+=c
 "}}}
-
+"Commenting Setup {{{
+autocmd FileType cpp set commentstring=//\ %s
+"}}}
 " Pulse Line  {{{
 
 function! s:Pulse() " {{{
