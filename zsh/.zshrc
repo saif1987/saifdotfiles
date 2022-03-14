@@ -70,12 +70,14 @@ ZSH_THEME="refined"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-	zsh-syntax-highlighting
-	zsh-autosuggestions
 	vi-mode
+	per-directory-history
 	colored-man-pages
 	web-search
 	pj
+	autojump
+	zsh-syntax-highlighting
+	zsh-autosuggestions
 	)
 source $ZSH/oh-my-zsh.sh
 
@@ -138,7 +140,12 @@ fi
 if [[ -n "$TMUX" ]]; then
 	bindkey "[1~" beginning-of-line # Home
 	bindkey "[4~" end-of-line # End
+	bindkey "OH" beginning-of-line # Home
+	bindkey "OF" end-of-line # End
+#bindkey "[5~" beginning-of-history # PageUp
 fi
+	bindkey "[1~" beginning-of-line # Home
+	bindkey "[4~" end-of-line # End
 
 # User configuration
 
@@ -165,3 +172,18 @@ fi
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+alias odu="onedrive --synchronize --no-remote-delete"
+alias od1="onedrive --synchronize --no-remote-delete --single-directory 'Research/Paperworks' " 
+alias odd1="onedrive --synchronize --download-only --no-remote-delete --single-directory 'Research/Paperworks' " 
+alias odd="onedrive --synchronize --download-only --no-remote-delete" 
+alias odstatus="systemctl status --user  onedrive"
+alias stokes-add="{sleep .1; cat ~/.ssh/msaifuddin-keys/msaifuddin_passphrase_1.txt; }|script -q /dev/null -c 'ssh-add ~/.ssh/msaifuddin-keys/msaifuddin_id_rsa_1'"
+alias mystokes-ssh=" ssh -Y -i ~/.ssh/msaifuddin-keys/msaifuddin_id_rsa_1 msaifuddin@stokes.ist.ucf.edu"
+alias mzstokes-add="{sleep .1; cat ~/.ssh/mzaman-keys/mzaman_passphrase_1.txt; }|script -q /dev/null -c 'ssh-add ~/.ssh/mzaman-keys/mzaman_id_rsa_1'"
+alias mzstokes-ssh=" ssh -Y -i ~/.ssh/mzaman-keys/mzaman_id_rsa_1 mzaman@stokes.ist.ucf.edu"
+alias mzstokes="mzaman@stokes.ist.ucf.edu"
+alias mystokes="msaifuddin@stokes.ist.ucf.edu"
+alias echoalias="alias \"$1\" | grep -o -P '(?<=\=).*'"
+export HISTSIZE=1000000000
+export SAVEHIST=$HISTSIZE
+setopt EXTENDED_HISTORY

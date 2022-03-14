@@ -123,6 +123,9 @@ Plugin 'chrisbra/csv.vim'
 Plugin 'junegunn/fzf' ", { 'do': { -> fzf#install() } }
 Plugin 'junegunn/fzf.vim'
 
+Plugin 'tpope/vim-fugitive'
+
+
 "Plugin for enhancedd % matches
 Plugin 'tmhedberg/matchit'
 "
@@ -338,8 +341,8 @@ function! JumpToTagInSplit()
     call JumpToInSplit("normal! \<c-]>")
 endfunction
 
-nnoremap <c-]> :silent! call JumpToTag()<cr>
-nnoremap <c-\> :silent! call JumpToTagInSplit()<cr>
+""nnoremap <c-]> :silent! call JumpToTag()<cr>
+""nnoremap <c-\> :silent! call JumpToTagInSplit()<cr>
 
 " Keep search matches in the middle of the window.
 nnoremap n nzzzv
