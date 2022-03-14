@@ -8,9 +8,10 @@ export ZSH=$HOME/saifdotfiles/zsh/.oh-my-zsh
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-#ZSH_THEME="robbyrussell"
+  ZSH_THEME="robbyrussell"
+# ZSH_THEME="refined"
 
-ZSH_THEME="refined"
+# ZSH_THEME="miloshadzic"
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
 # a theme from this variable instead of looking in ~/.oh-my-zsh/themes/
@@ -51,7 +52,7 @@ ZSH_THEME="refined"
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
 # much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
+  DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # Uncomment the following line if you want to change the command execution time
 # stamp shown in the history command output.
@@ -187,3 +188,9 @@ alias echoalias="alias \"$1\" | grep -o -P '(?<=\=).*'"
 export HISTSIZE=1000000000
 export SAVEHIST=$HISTSIZE
 setopt EXTENDED_HISTORY
+#alias vim='nvim -S ~/.vimrc'
+alias svim='nvim -u ~/.SpaceVim/vimrc'
+alias rvim=' vim -S ./.vimrc' 
+#Autojump instruction
+[[ -s /home/saif/.autojump/etc/profile.d/autojump.sh ]] && source /home/saif/.autojump/etc/profile.d/autojump.sh
+autoload -U compinit && compinit -u
