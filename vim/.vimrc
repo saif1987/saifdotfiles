@@ -142,7 +142,7 @@ let g:airline_powerline_fonts = 1
 
 
 " c related works : need to explain
-Plugin 'c.vim'
+"Plugin 'c.vim'
 
 " Ctag related bar : Code Outline
 Plugin 'preservim/tagbar'
@@ -207,7 +207,7 @@ let python_highlight_all = 1
 
 set tags=tags
 command! MakeTags !ctags -R
-command! MakeCppTags !ctags -R --c++-kinds=+p --fields=+iaS --extra=+q . 
+command! MakeCppTags !ctags -R --c++-kinds=+p --fields=+iaS --extras=+q --exclude=build --exclude=src/lte --exclude=src/uan 
 
 
 
@@ -539,7 +539,7 @@ nnoremap gj <C-w><C-j>
 "inoremap <C-j> <C-O>gj
 "}}}
 "Refresh vimrc {{{
-  noremap <Leader>R  :so /home/saif/.vimrc<CR>
+  noremap <Leader>R  :so $HOME/.vimrc<CR>
 "}}}
 "Many Functions are from https://bitbucket.org/sjl/dotfiles/src/tip/vim/vimrc]
 "Some Vimrc to look into: nickjj/dotfiles/blob/master/.vimrc
