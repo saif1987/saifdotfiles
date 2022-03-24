@@ -1,3 +1,6 @@
 [submodule "/home/saif/saifdotfiles/vim/.vim/bundle/Vundle.vim"]
 	path = /home/saif/saifdotfiles/vim/.vim/bundle/Vundle.vim
 	url = https://github.com/VundleVim/Vundle.vim.git
+[submodule "/home/saif/saifdotfiles/zsh/.oh-my-zsh"]
+	path = /home/saif/saifdotfiles/zsh/.oh-my-zsh
+	url = https://github.com/ohmyzsh/ohmyzsh.git
