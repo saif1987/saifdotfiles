@@ -22,7 +22,7 @@ git submodule update
 
 ```
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM}/plugins/zsh-syntax-highlighting
-git clone https://github.com/zsh-users/zsh-autosugges;wtions ${ZSH_CUSTOM}/plugins/zsh-autosuggestions
+git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM}/plugins/zsh-autosuggestions
 ```
 
 6.   open vim and insert command (; is the :) 
@@ -34,6 +34,6 @@ git clone https://github.com/zsh-users/zsh-autosugges;wtions ${ZSH_CUSTOM}/plugi
 7. make zsh your default shell
 
 ```
-sudo chsh -s $(which zsh)
+chsh -s $(which zsh)
 
 ```
