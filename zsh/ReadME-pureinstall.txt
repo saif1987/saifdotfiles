@@ -8,6 +8,6 @@
 #For Zsh Custom Plugins Clone from Git
 
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM}/plugins/zsh-syntax-highlighting
-git clone https://github.com/zsh-users/zsh-autosugges;wtions ${ZSH_CUSTOM}/plugins/zsh-autosuggestions
+git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM}/plugins/zsh-autosuggestions
 git clone https://github.com/unixorn/fzf-zsh-plugin.git ${ZSH_CUSTOM}/plugins/fzf-zsh-plugin
 
