@@ -130,7 +130,7 @@ Plugin 'tpope/vim-fugitive'
 Plugin 'tmhedberg/matchit'
 "
 "" ...
-"Plugin 'Valloric/YouCompleteMe'
+Plugin 'Valloric/YouCompleteMe'
 
 
 "For switching betwen .c and .h
@@ -161,7 +161,9 @@ Plugin 'tpope/vim-commentary'
 
 " Automatically show Vim's complete menu while typing.
 Plugin 'vim-scripts/AutoComplPop'
-
+" This plugin uses clang for accurately completing C and C++ code.
+" Plugin 'xavierd/clang_complete'
+" let g:clang_library_path=
 "Plugin 'unblevable/quick-scope' "highlights f F t T jump list
 "Plugin 'neoclide/coc.nvim'
 
@@ -479,6 +481,11 @@ nnoremap <silent><Leader>T :Tags <C-R>=expand("<cword>")<CR><CR>
 "-------------------------------------------------------------------
 set completeopt=menuone,longest
 set shortmess+=c
+
+"For clang_complete
+"
+ " let g:clang_library_path='/usr/lib/llvm-10/lib/libclang-10.so.1'
+
 "}}}
 "Commenting Setup {{{
 autocmd FileType cpp set commentstring=//\ %s

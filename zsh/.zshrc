@@ -195,3 +195,10 @@ alias rvim=' vim -S ./.vimrc'
 #Autojump instruction
 [[ -s /home/saif/.autojump/etc/profile.d/autojump.sh ]] && source /home/saif/.autojump/etc/profile.d/autojump.sh
 autoload -U compinit && compinit -u
+
+alias xstart="xpra start :7 && DISPLAY=:7 xterm &"
+alias xshare="xpra shadow :0"
+alias xstop="xpra stop :7"
+alias xnoshare="xpra stop :0"
+
+
