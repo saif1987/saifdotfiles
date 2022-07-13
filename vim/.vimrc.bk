@@ -130,7 +130,8 @@ Plugin 'tpope/vim-fugitive'
 Plugin 'tmhedberg/matchit'
 "
 "" ...
-Plugin 'Valloric/YouCompleteMe'
+"Plugin 'Valloric/YouCompleteMe'
+Plugin 'xavierd/clang_complete 
 
 
 "For switching betwen .c and .h
@@ -161,9 +162,7 @@ Plugin 'tpope/vim-commentary'
 
 " Automatically show Vim's complete menu while typing.
 Plugin 'vim-scripts/AutoComplPop'
-" This plugin uses clang for accurately completing C and C++ code.
-" Plugin 'xavierd/clang_complete'
-" let g:clang_library_path=
+
 "Plugin 'unblevable/quick-scope' "highlights f F t T jump list
 "Plugin 'neoclide/coc.nvim'
 
@@ -209,9 +208,9 @@ let python_highlight_all = 1
 
 set tags=tags
 command! MakeTags !ctags -R
-command! MakeCppTags !ctags -R --c++-kinds=+p --fields=+iaS --extras=+q --exclude=build --exclude=src/lte --exclude=src/uan --exclude='./waf*'
+command! MakeCppTags !ctags -R --c++-kinds=+p --fields=+iaS --extra=+q --exclude=build --exclude=src/lte . 
 
-let g:ycm_global_ycm_extra_conf='$HOME/saifdotfiles/vim/.vim/.ycm_extra_conf.py'
+
 
 " Add Tagbar hotkey to Leader g
  noremap <silent> <Leader>g :TagbarToggle<CR>
@@ -437,14 +436,16 @@ set virtualedit+=block      "lets place cursor anywhere in visual mode
 noremap <silent> <leader><space> :noh<cr>:call clearmatches()<cr>
 " Press * to search for the term under the cursor or a visual selection and
 " then press a key below to replace all instances of it in the current file.
-nnoremap <Leader>ra :%s///g<Left><Left>
-nnoremap <Leader>rc :%s///gc<Left><Left><Left>
+nnoremap <Leader>/a :%s///g<Left><Left>
+nnoremap <Leader>/c :%s///gc<Left><Left><Left>
+nnoremap <Leader>/b :bufdo %s///g<Left><Left>
 " The same as above but instead of acting on the whole file it will be
 " restricted to the previously visually selected range. You can do that by
 " pressing *, visually selecting the range you want it to apply to and then
 " press a key below to replace all instances of it in the current selection.
-xnoremap <Leader>ra :s///g<Left><Left>
-xnoremap <Leader>rc :s///gc<Left><Left><Left>
+xnoremap <Leader>/a :s///g<Left><Left>
+xnoremap <Leader>/c :s///gc<Left><Left><Left>
+xnoremap <Leader>/b :bufdo %s///g<Left><Left>
 
 
 "map <tab> %
@@ -479,12 +480,53 @@ nnoremap <silent><Leader>T :Tags <C-R>=expand("<cword>")<CR><CR>
 
 "Autocomplete setup{{{
 "-------------------------------------------------------------------
+"[200~https://deathbeam.github.io/Fuzzy-completion-in-Vimr
+""Fuzzy Complete deathbeam {{{
+"let g:fuzzyfunc = &omnifunc
+"
+"function! FuzzyCompleteFunc(findstart, base)
+"  let Func = function(get(g:, 'fuzzyfunc', &omnifunc))
+"  let results = Func(a:findstart, a:base)
+"
+"  if a:findstart
+"    return results
+"  endif
+"
+"  if type(results) == type({}) && has_key(results, 'words')
+"    let l:words = []
+"    for result in results.words
+"      call add(words, result.word . ' ' . result.menu)
+"    endfor
+"  elseif len(results)
+"    let l:words = results
+"  endif
+"
+"  if len(l:words)
+"    let result = fzf#run({ 'source': l:words, 'down': '~40%', 'options': printf('--query "%s" +s', a:base) })
+"
+"    if empty(result)
+"      return [ a:base ]
+"    endif
+"
+"    return [ split(result[0])[0] ]
+"  else
+"    return [ a:base ]
+"  endif
+"endfunction
+"
+""}}}
+"set completefunc=FuzzyCompleteFunc
 set completeopt=menuone,longest
 set shortmess+=c
-
-"For clang_complete
-"
- " let g:clang_library_path='/usr/lib/llvm-10/lib/libclang-10.so.1'
+inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+" inoremap <expr> <Tab> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+inoremap <expr> <TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
+inoremap <expr> <S-TAB> pumvisible() ? "\<C-p>" : "\<TAB>"
+inoremap <expr> <C-n> pumvisible() ? '<C-n>' :
+			\ '<C-n><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
+inoremap <expr> <M-,> pumvisible() ? '<C-n>' :
+			\ '<C-x><C-o><C-n><C-p><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
+"inoremap <expr> <Esc> pumvisible() ? "\<C-e>" : "\<Esc>"
 
 "}}}
 "Commenting Setup {{{
@@ -522,15 +564,14 @@ command! -nargs=0 Pulse call s:Pulse()
 
 " }}}
 
-
 "wrap related Settings{{{
 " Seamlessly treat visual lines as actual lines when moving around.
 noremap j gj
 noremap k gk
-noremap <Down> gj
-noremap <Up> gk
-inoremap <Down> <C-o>gj
-inoremap <Up> <C-o>gk
+" noremap <Down> gj
+" noremap <Up> gk
+" inoremap <Down> <C-o>gj
+" inoremap <Up> <C-o>gk
 "}}}
 "Window navigation {{{
 " Navigate around splits with a single key combo.
@@ -546,7 +587,7 @@ nnoremap gj <C-w><C-j>
 "inoremap <C-j> <C-O>gj
 "}}}
 "Refresh vimrc {{{
-  noremap <Leader>R  :so $HOME/.vimrc<CR>
+  noremap <Leader>R  :so /home/saif/.vimrc<CR>
 "}}}
 "Many Functions are from https://bitbucket.org/sjl/dotfiles/src/tip/vim/vimrc]
-"Some Vimrc to look into: nickjj/dotfiles/blob/master/.vimrc
+
