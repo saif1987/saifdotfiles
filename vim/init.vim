@@ -7,7 +7,22 @@
 
 
 "
+"
+let vimplug_exists = expand('~/.local/share/nvim/site/autoload/plug.vim')
+if !filereadable(vimplug_exists)
+  if !executable("curl")
+    echoerr "You have to install curl or first install vim-plug yourself!"
+    execute "q!"
+  endif
+  echo "Installing Vim-Plug..."
+  echo ""
+  silent !curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+" let g:not_finish_vimplug = "yes"
 
+  autocmd VimEnter * PlugInstall
+endif
+"
+"
 " PLUGIN settings:{{{
 
 """ Vim-Plug
@@ -64,6 +79,27 @@ Plug 'junegunn/limelight.vim'
 Plug 'junegunn/vim-journal'
 
 call plug#end()
+
+
+
+""" Core plugin configuration (lua)
+lua << EOF
+servers = {
+    'pyright',
+    --'tsserver', -- uncomment for typescript. See https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md for other language servers
+}
+require('treesitter-config')
+require('nvim-cmp-config')
+require('lspconfig-config')
+require('telescope-config')
+require('lualine-config')
+require('nvim-tree-config')
+require('diagnostics')
+EOF
+
+
+
+
 "}}}
 
 
@@ -607,21 +643,6 @@ nnoremap gj <C-w><C-j>
 "" Python
 "let g:python3_host_prog = '~/.config/nvim/env/bin/python3'
 "let g:pydocstring_doq_path = '~/.config/nvim/env/bin/doq'
-"
-"""" Core plugin configuration (lua)
-"lua << EOF
-"servers = {
-"    'pyright',
-"    --'tsserver', -- uncomment for typescript. See https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md for other language servers
-"}
-"require('treesitter-config')
-"require('nvim-cmp-config')
-"require('lspconfig-config')
-"require('telescope-config')
-"require('lualine-config')
-"require('nvim-tree-config')
-"require('diagnostics')
-"EOF
 "
 """" Custom Functions
 "
