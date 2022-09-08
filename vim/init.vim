@@ -8,6 +8,7 @@
 
 "
 "
+"  PLUGIN settings:{{{  
 let vimplug_exists = expand('~/.local/share/nvim/site/autoload/plug.vim')
 if !filereadable(vimplug_exists)
   if !executable("curl")
@@ -23,7 +24,6 @@ if !filereadable(vimplug_exists)
 endif
 "
 "
-" PLUGIN settings:{{{
 
 """ Vim-Plug
 call plug#begin()
@@ -46,7 +46,8 @@ Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 Plug 'nvim-lualine/lualine.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'kyazdani42/nvim-tree.lua'
-
+Plug 'mfussenegger/nvim-dap'
+Plug 'Shatur/neovim-cmake'
 " Functionalities
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-sensible'
@@ -82,20 +83,6 @@ call plug#end()
 
 
 
-""" Core plugin configuration (lua)
-lua << EOF
-servers = {
-    'pyright',
-    --'tsserver', -- uncomment for typescript. See https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md for other language servers
-}
-require('treesitter-config')
-require('nvim-cmp-config')
-require('lspconfig-config')
-require('telescope-config')
-require('lualine-config')
-require('nvim-tree-config')
-require('diagnostics')
-EOF
 
 
 
@@ -222,11 +209,54 @@ set clipboard=unnamed
 "}}}
 
 " colorscheme set{{{
-set t_Co=256
-syntax on
-colorscheme gruvbox
-set background=dark    " Setting dark mode
-let python_highlight_all = 1
+"set t_Co=256
+"syntax on
+"colorscheme gruvbox
+"set background=dark    " Setting dark mode
+"let python_highlight_all = 1
+"
+"---Other Setup
+
+" Functions and autocmds to run whenever changing colorschemes
+function! TransparentBackground()
+    highlight Normal guibg=NONE ctermbg=NONE
+    highlight LineNr guibg=NONE ctermbg=NONE
+    set fillchars+=vert:\│
+    highlight WinSeparator gui=NONE guibg=NONE guifg=#444444 cterm=NONE ctermbg=NONE ctermfg=gray
+    highlight VertSplit gui=NONE guibg=NONE guifg=#444444 cterm=NONE ctermbg=NONE ctermfg=gray
+endfunction
+
+" Use these colors for Pmenu, CmpPmenusBorder and TelescopeBorder when using dracula colorscheme
+function! DraculaTweaks()
+    " Pmenu colors when not using bordered windows
+    highlight Pmenu guibg=#363948
+    highlight PmenuSbar guibg=#363948
+    " Completion/documentation Pmenu border color when using bordered windows
+    highlight link CmpPmenuBorder NonText
+    " Telescope borders
+    highlight link TelescopeBorder Constant
+endfunction
+
+augroup MyColors
+    autocmd!
+    autocmd ColorScheme dracula call DraculaTweaks()
+    "autocmd ColorScheme * call TransparentBackground() " uncomment if you are using a translucent terminal and you want nvim to use that
+augroup END
+
+color dracula
+set termguicolors
+
+""" Core plugin configuration (vim)
+
+" Treesitter
+augroup DraculaTreesitterSourcingFix
+    autocmd!
+    autocmd ColorScheme dracula runtime after/plugin/dracula.vim
+    syntax on
+augroup end
+
+"
+"
 "}}}
 
 " Tag and Tagbar setup{{{
@@ -335,7 +365,7 @@ nnoremap <c-o> <c-o>zz
 
 "}}}
 
-"Folding Setup {{{
+"Folding Setup {{{ 
 set foldmethod=marker
 " Space to toggle folds.
 nnoremap <Leader>z za
@@ -381,6 +411,7 @@ set foldtext=MyFoldText()
 
 
 "}}}
+
 " Search and Replace and movement -------------------------------------------------- {{{
 
 " Use sane regexes.
@@ -432,33 +463,30 @@ vnoremap L g_
 "
 "Try to use fzf for last search
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 "Open FZF file open remap
-nnoremap <Leader>f :Files<CR>
-nnoremap <Leader>b  :Buffers<CR>
-nnoremap <Leader>h  :History<CR>
-nnoremap <Leader>l  :BLines<CR>
-nnoremap <Leader>L :Lines<CR>
-nnoremap <Leader>' :Marks<CR>
-nnoremap <Leader>t  :BTags<CR>
+"nnoremap <Leader>f :Files<CR>
+"nnoremap <Leader>b  :Buffers<CR>
+"nnoremap <Leader>h  :History<CR>
+"nnoremap <Leader>l  :BLines<CR>
+"nnoremap <Leader>L :Lines<CR>
+"nnoremap <Leader>' :Marks<CR>
+"nnoremap <Leader>t  :BTags<CR>
 "nmap <Leader>T :Tags<CR> "I think global tag search can be done by command
 "nmap <Leader>T :call fzf#vim#tags({'options': '-q'.shellescape(expand('<cword>'))})<CR>
-nnoremap <silent><Leader>T :Tags <C-R>=expand("<cword>")<CR><CR>
+"nnoremap <silent><Leader>T :Tags <C-R>=expand("<cword>")<CR><CR>
+
+
+" Telescope mappings
+nnoremap <leader>f <cmd>Telescope find_files<cr>
+nnoremap <leader>h <cmd>Telescope oldfiles<cr>
+nnoremap <leader>g <cmd>Telescope live_grep<cr>
+nnoremap <leader>b <cmd>Telescope buffers<cr>
+nnoremap <leader>t <cmd>Telescope current_buffer_tags<cr>
+nnoremap <leader>T <cmd>Telescope tags<cr>
+nnoremap <leader>' <cmd>Telescope marks<cr>
+nnoremap <leader>cc <cmd>Telescope colorscheme<cr>
+nnoremap <leader>l <cmd>Telescope current_buffer_fuzzy_find<cr>
+
 
 "}}}
 
@@ -468,6 +496,9 @@ nnoremap <silent><Leader>T :Tags <C-R>=expand("<cword>")<CR><CR>
 set completeopt=menuone,longest
 set shortmess+=c
 
+"" nvim-cmp  -- another setup
+"set completeopt=menu,menuone,noselect
+"
 "For clang_complete
 "
  " let g:clang_library_path='/usr/lib/llvm-10/lib/libclang-10.so.1'
@@ -540,6 +571,24 @@ nnoremap gj <C-w><C-j>
 "inoremap <C-j> <C-O>gj
 " }}} 
 
+""" Filetype-Specific Configurations {{{
+
+" HTML, XML, Jinja
+autocmd FileType html setlocal shiftwidth=2 tabstop=2 softtabstop=2
+autocmd FileType css setlocal shiftwidth=2 tabstop=2 softtabstop=2
+autocmd FileType xml setlocal shiftwidth=2 tabstop=2 softtabstop=2
+autocmd FileType htmldjango setlocal shiftwidth=2 tabstop=2 softtabstop=2
+autocmd FileType htmldjango inoremap {{ {{  }}<left><left><left>
+autocmd FileType htmldjango inoremap {% {%  %}<left><left><left>
+autocmd FileType htmldjango inoremap {# {#  #}<left><left><left>
+
+" Markdown and Journal
+autocmd FileType markdown setlocal shiftwidth=2 tabstop=2 softtabstop=2
+autocmd FileType journal setlocal shiftwidth=2 tabstop=2 softtabstop=2
+
+"}}}
+
+""" Unused **** {{{
 """" Main Configurations
 "filetype plugin indent on
 "set tabstop=4 softtabstop=4 shiftwidth=4 expandtab smarttab autoindent
@@ -555,64 +604,22 @@ nnoremap gj <C-w><C-j>
 "set number
 "set title
 "
-"""" Filetype-Specific Configurations
-"
-"" HTML, XML, Jinja
-"autocmd FileType html setlocal shiftwidth=2 tabstop=2 softtabstop=2
-"autocmd FileType css setlocal shiftwidth=2 tabstop=2 softtabstop=2
-"autocmd FileType xml setlocal shiftwidth=2 tabstop=2 softtabstop=2
-"autocmd FileType htmldjango setlocal shiftwidth=2 tabstop=2 softtabstop=2
-"autocmd FileType htmldjango inoremap {{ {{  }}<left><left><left>
-"autocmd FileType htmldjango inoremap {% {%  %}<left><left><left>
-"autocmd FileType htmldjango inoremap {# {#  #}<left><left><left>
-"
-"" Markdown and Journal
-"autocmd FileType markdown setlocal shiftwidth=2 tabstop=2 softtabstop=2
-"autocmd FileType journal setlocal shiftwidth=2 tabstop=2 softtabstop=2
-"
-"""" Coloring
-"
-"" Functions and autocmds to run whenever changing colorschemes
-"function! TransparentBackground()
-"    highlight Normal guibg=NONE ctermbg=NONE
-"    highlight LineNr guibg=NONE ctermbg=NONE
-"    set fillchars+=vert:\│
-"    highlight WinSeparator gui=NONE guibg=NONE guifg=#444444 cterm=NONE ctermbg=NONE ctermfg=gray
-"    highlight VertSplit gui=NONE guibg=NONE guifg=#444444 cterm=NONE ctermbg=NONE ctermfg=gray
-"endfunction
-"
-"" Use these colors for Pmenu, CmpPmenusBorder and TelescopeBorder when using dracula colorscheme
-"function! DraculaTweaks()
-"    " Pmenu colors when not using bordered windows
-"    highlight Pmenu guibg=#363948
-"    highlight PmenuSbar guibg=#363948
-"    " Completion/documentation Pmenu border color when using bordered windows
-"    highlight link CmpPmenuBorder NonText
-"    " Telescope borders
-"    highlight link TelescopeBorder Constant
-"endfunction
-"
-"augroup MyColors
-"    autocmd!
-"    autocmd ColorScheme dracula call DraculaTweaks()
-"    "autocmd ColorScheme * call TransparentBackground() " uncomment if you are using a translucent terminal and you want nvim to use that
-"augroup END
-"
-"color dracula
-"set termguicolors
-"
-"""" Core plugin configuration (vim)
-"
-"" Treesitter
-"augroup DraculaTreesitterSourcingFix
-"    autocmd!
-"    autocmd ColorScheme dracula runtime after/plugin/dracula.vim
-"    syntax on
-"augroup end
-"
-"" nvim-cmp
-"set completeopt=menu,menuone,noselect
-"
+"""" Core plugin configuration (lua)
+"lua << EOF
+"servers = {
+"    'pyright',
+"    --'tsserver', -- uncomment for typescript. See https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md for other language servers
+"}
+"require('treesitter-config')
+"require('nvim-cmp-config')
+"require('lspconfig-config')
+"require('telescope-config')
+"require('lualine-config')
+"require('nvim-tree-config')
+"require('diagnostics')
+"EOF
+
+
 "" signify
 "let g:signify_sign_add = '│'
 "let g:signify_sign_delete = '│'
@@ -681,11 +688,5 @@ nnoremap gj <C-w><C-j>
 "" Solidity (requires: npm install --save-dev prettier prettier-plugin-solidity)
 "autocmd Filetype solidity nmap <leader>p :0,$!npx prettier %<CR>
 "
-"" Telescope mappings
-"nnoremap <leader>ff <cmd>Telescope find_files<cr>
-"nnoremap <leader>fg <cmd>Telescope live_grep<cr>
-"nnoremap <leader>fb <cmd>Telescope buffers<cr>
-"nnoremap <leader>fh <cmd>Telescope help_tags<cr>
-"nnoremap <leader>fc <cmd>Telescope colorscheme<cr>
-"nnoremap <leader>f/ <cmd>Telescope current_buffer_fuzzy_find<cr>
+"}}} 
 
