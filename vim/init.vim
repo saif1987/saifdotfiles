@@ -31,6 +31,8 @@ call plug#begin()
 " Core (treesitter, nvim-lspconfig, nvim-cmp, nvim-telescope, nvim-lualine)
 Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
 Plug 'nvim-treesitter/playground'
+Plug 'williamboman/mason.nvim'    
+Plug 'williamboman/mason-lspconfig.nvim'
 Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
@@ -40,7 +42,9 @@ Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-vsnip'
 Plug 'hrsh7th/vim-vsnip'
 Plug 'hrsh7th/cmp-nvim-lsp-signature-help'
+Plug 'hrsh7th/cmp-nvim-lua'
 Plug 'nvim-lua/plenary.nvim'
+Plug 'p00f/cphelper.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 Plug 'nvim-lualine/lualine.nvim'
@@ -68,6 +72,11 @@ Plug 'antoinemadec/FixCursorHold.nvim'
 " Functionalities - Python
 Plug 'psf/black', { 'branch': 'stable' }
 Plug 'heavenshell/vim-pydocstring'
+
+" Functionalities - Rust
+Plug 'rust-lang/rust-analyzer'
+Plug 'simrat39/rust-tools.nvim'
+
 
 " Aesthetics - Colorschemes
 Plug 'dracula/vim', { 'as': 'dracula' }
@@ -493,7 +502,7 @@ nnoremap <leader>l <cmd>Telescope current_buffer_fuzzy_find<cr>
 
 "Autocomplete setup{{{
 "-------------------------------------------------------------------
-set completeopt=menuone,longest
+set completeopt=menu,menuone,noselect ""longest
 set shortmess+=c
 
 "" nvim-cmp  -- another setup
@@ -588,6 +597,229 @@ autocmd FileType journal setlocal shiftwidth=2 tabstop=2 softtabstop=2
 
 "}}}
 
+"""" Core plugin configuration (lua) {{{
+
+lua << EOF
+local Path = require('plenary.path')
+require('cmake').setup({
+  cmake_executable = 'cmake', -- CMake executable to run.
+  save_before_build = true, -- Save all buffers before building.
+  parameters_file = 'neovim.json', -- JSON file to store information about selected target, run arguments and build type.
+  default_parameters = { args = {}, build_type = 'Debug' }, -- The default values in `parameters_file`. Can also optionally contain `run_dir` with the working directory for applications.
+  build_dir = tostring(Path:new('{cwd}', 'build', '{os}-{build_type}')), -- Build directory. The expressions `{cwd}`, `{os}` and `{build_type}` will be expanded with the corresponding text values. Could be a function that return the path to the build directory.
+--  samples_path = tostring(script_path:parent():parent():parent() / 'samples'), -- Folder with samples. `samples` folder from the plugin directory is used by default.
+  default_projects_path = tostring(Path:new(vim.loop.os_homedir(), 'Projects')), -- Default folder for creating project.
+  configure_args = { '-D', 'CMAKE_EXPORT_COMPILE_COMMANDS=1' }, -- Default arguments that will be always passed at cmake configure step. By default tells cmake to generate `compile_commands.json`.
+  build_args = {}, -- Default arguments that will be always passed at cmake build step.
+  on_build_output = nil, -- Callback that will be called each time data is received by the current process. Accepts the received data as an argument.
+  quickfix = {
+    pos = 'botright', -- Where to open quickfix
+    height = 10, -- Height of the opened quickfix.
+    only_on_error = false, -- Open quickfix window only if target build failed.
+  },
+  copy_compile_commands = true, -- Copy compile_commands.json to current working directory.
+  dap_configurations = { -- Table of different DAP configurations.
+    lldb_vscode = { type = 'lldb', request = 'launch' },
+    cppdbg_vscode = { type = 'cppdbg', request = 'launch' },
+  },
+  dap_configuration = 'lldb_vscode', -- DAP configuration to use if the projects `parameters_file` does not specify one.
+  dap_open_command = function(...) require('dap').repl.open(...) end, -- Command to run after starting DAP session. You can set it to `false` if you don't want to open anything or `require('dapui').open` if you are using https://github.com/rcarriga/nvim-dap-ui
+})
+
+local cmp = require('cmp')
+
+cmp.setup({
+  snippet = {
+    expand = function(args)
+     -- REQUIRED - you must specify a snippet engine
+        vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+        -- require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+        -- require('snippy').expand_snippet(args.body) -- For `snippy` users.
+        -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
+      -- For `ultisnips` user.
+--      vim.fn["UltiSnips#Anon"](args.body)
+    end,
+  },
+  mapping = cmp.mapping.preset.insert({
+          ['<Tab>'] = function(fallback)
+            if cmp.visible() then
+              cmp.select_next_item()
+            else
+              fallback()
+            end
+          end,
+          ['<S-Tab>'] = function(fallback)
+            if cmp.visible() then
+              cmp.select_prev_item()
+            else
+              fallback()
+            end
+          end,
+          ['<CR>'] = cmp.mapping.confirm({ select = true }),
+          ['<C-e>'] = cmp.mapping.abort(),
+          ['<Esc>'] = cmp.mapping.close(),
+          ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+          ['<C-f>'] = cmp.mapping.scroll_docs(4),
+        }),
+  sources = {
+    { name = 'nvim_lsp' }, -- For nvim-lsp
+    { name = 'vsnip' }, -- For cmp_vsnip
+--    { name = 'ultisnips' }, -- For ultisnips user.
+    { name = 'nvim_lua' }, -- for nvim lua function
+    { name = 'path' }, -- for path completion
+    { name = 'buffer', keyword_length = 4 }, -- for buffer word completion
+--    { name = 'omni' },
+--    { name = 'emoji', insert = true, } -- emoji completion
+    { name = 'nvim_lsp_signature_help'},            -- display function signatures with current parameter emphasized
+    { name = 'calc'},                               -- source for math calculation
+
+  },
+--  completion = {
+--    keyword_length = 1,
+--    completeopt = "menu,noselect"
+--  },
+  view = {
+    entries = 'custom',
+  },
+    formatting = {
+      fields = {'menu', 'abbr', 'kind'},
+      format = function(entry, item)
+          local menu_icon ={
+              nvim_lsp = 'λ',
+              vsnip = '⋗',
+              buffer = 'Ω',
+              path = '🖫',
+          }
+          item.menu = menu_icon[entry.source.name]
+          return item
+      end,
+  },
+--  formatting = {
+--    format = lspkind.cmp_format({
+--      mode = "symbol_text",
+--      menu = ({
+--        nvim_lsp = "[LSP]",
+--        ultisnips = "[US]",
+--        nvim_lua = "[Lua]",
+--        path = "[Path]",
+--        buffer = "[Buffer]",
+--        emoji = "[Emoji]",
+--          omni = "[Omni]",
+--      }),
+--    }),
+--  },
+})
+
+-- The nvim-cmp almost supports LSP's capabilities so You should advertise it to LSP servers..
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+
+local lspconfig = require('lspconfig')
+lspconfig.clangd.setup{
+	cmd = {"clangd", "--background-index"};
+	filetypes = {"c", "cc","cpp", "objc", "objcpp"};
+
+  	capabilities = capabilities,
+}
+
+
+local rt = {
+    server = {
+        settings = {
+            on_attach = function(_, bufnr)
+                -- Hover actions
+                vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
+                -- Code action groups
+                vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
+                require 'illuminate'.on_attach(client)
+            end,
+            ["rust-analyzer"] = {
+                checkOnSave = {
+                    command = "clippy"
+                }, 
+            },
+        }
+    },
+}
+require('rust-tools').setup(rt)
+
+-- LSP Diagnostics Options Setup 
+local sign = function(opts)
+  vim.fn.sign_define(opts.name, {
+    texthl = opts.name,
+    text = opts.text,
+    numhl = ''
+  })
+end
+
+sign({name = 'DiagnosticSignError', text = ''})
+sign({name = 'DiagnosticSignWarn', text = ''})
+sign({name = 'DiagnosticSignHint', text = ''})
+sign({name = 'DiagnosticSignInfo', text = ''})
+
+vim.diagnostic.config({
+    virtual_text = false,
+    signs = true,
+    update_in_insert = true,
+    underline = true,
+    severity_sort = false,
+    float = {
+        border = 'rounded',
+        source = 'always',
+        header = '',
+        prefix = '',
+    },
+})
+
+vim.cmd([[
+set signcolumn=yes
+autocmd CursorHold * lua vim.diagnostic.open_float(nil, { focusable = false })
+]])
+
+-- Treesitter Plugin Setup 
+require('nvim-treesitter.configs').setup {
+  ensure_installed = { "lua", "rust", "toml", "cpp", "c" },
+  auto_install = true,
+  highlight = {
+    enable = true,
+    additional_vim_regex_highlighting=false,
+  },
+  ident = { enable = true }, 
+  rainbow = {
+    enable = true,
+    extended_mode = true,
+    max_file_lines = nil,
+  }
+}
+
+-- Treesitter folding 
+vim.wo.foldmethod = 'expr'
+vim.wo.foldexpr = 'nvim_treesitter#foldexpr()'
+
+require("mason").setup()
+--require('treesitter-config')
+--require('lspconfig-config')
+--require('telescope-config')
+--require('lualine-config')
+--require('nvim-tree-config')
+--require('diagnostics')
+EOF
+"
+"EOF
+"
+"--servers = {
+"--    'pyright',
+"--    --'tsserver', -- uncomment for typescript. See https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md for other language servers
+"--}
+"--require('treesitter-config')
+"--require('nvim-cmp-config')
+"--require('lspconfig-config')
+"--require('telescope-config')
+"--require('lualine-config')
+"--require('nvim-tree-config')
+"--require('diagnostics')
+"}}}
+
 """ Unused **** {{{
 """" Main Configurations
 "filetype plugin indent on
@@ -604,22 +836,6 @@ autocmd FileType journal setlocal shiftwidth=2 tabstop=2 softtabstop=2
 "set number
 "set title
 "
-"""" Core plugin configuration (lua)
-"lua << EOF
-"servers = {
-"    'pyright',
-"    --'tsserver', -- uncomment for typescript. See https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md for other language servers
-"}
-"require('treesitter-config')
-"require('nvim-cmp-config')
-"require('lspconfig-config')
-"require('telescope-config')
-"require('lualine-config')
-"require('nvim-tree-config')
-"require('diagnostics')
-"EOF
-
-
 "" signify
 "let g:signify_sign_add = '│'
 "let g:signify_sign_delete = '│'
