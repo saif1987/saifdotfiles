@@ -1,0 +1,61 @@
+// XKBen Bengali keyboard overlay
+// based on Bijoy and Unijoy overlays
+// abu jar m akkas 2009
+
+partial default alphanumeric_keys
+xkb_symbols "xkbengali" {
+name[Group1]= "xkben";
+
+key <TLDE> { [ 0x100200c, 0x100200d, 0x100200b, voidsymbol ] };
+key <AE01> { [ 0x10009e7, 0x1000021, 0x10009f4, voidsymbol ] };
+key <AE02> { [ 0x10009e8, 0x1000040, 0x10009f5, voidsymbol ] };
+key <AE03> { [ 0x10009e9, 0x1000023, 0x10009f6, voidsymbol ] };
+key <AE04> { [ 0x10009ea, 0x10009f3, 0x10009f7, voidsymbol ] };
+key <AE05> { [ 0x10009eb, 0x1000025, 0x10009f2, voidsymbol ] };
+key <AE06> { [ 0x10009ec, 0x10000f7, 0x100005e, voidsymbol ] };
+key <AE07> { [ 0x10009ed, 0x1000981, 0x10009fa, voidsymbol ] };
+key <AE08> { [ 0x10009ee, 0x10000d7, 0x100002a, voidsymbol ] };
+key <AE09> { [ 0x10009ef, 0x1000028, voidsymbol, voidsymbol ] };
+key <AE10> { [ 0x10009e6, 0x1000029, 0x10009f8, 0x1000970 ] };
+key <AE11> { [ 0x100002d, 0x100005f, 0x10009f9, voidsymbol ] };
+key <AE12> { [ 0x100003d, 0x100002b, 0x1002260, voidsymbol ] };
+key <AD01> { [ 0x1000999, 0x1000982, 0x100098c, voidsymbol ] };
+key <AD02> { [ 0x10009af, 0x10009df, 0x10009e1, voidsymbol ] };
+key <AD03> { [ 0x10009a1, 0x10009a2, 0x1000988, voidsymbol ] };
+key <AD04> { [ 0x10009aa, 0x10009ab, voidsymbol, voidsymbol ] };
+key <AD05> { [ 0x100099f, 0x10009a0, voidsymbol, voidsymbol ] };
+key <AD06> { [ 0x100099a, 0x100099b, voidsymbol, voidsymbol ] };
+key <AD07> { [ 0x100099c, 0x100099d, 0x100098a, voidsymbol ] };
+key <AD08> { [ 0x10009b9, 0x100099e, 0x1000990, 0x10009bd ] };
+key <AD09> { [ 0x1000997, 0x1000998, 0x1000994, voidsymbol ] };
+key <AD10> { [ 0x10009dc, 0x10009dd, voidsymbol, voidsymbol ] };
+key <AD11> { [ 0x100005b, 0x100007b, voidsymbol, voidsymbol ] };
+key <AD12> { [ 0x100005d, 0x100007d, voidsymbol, voidsymbol ] };
+key <AC01> { [ 0x10009c3, voidsymbol, 0x100098b, voidsymbol ] };
+key <AC02> { [ 0x10009c1, 0x10009c2, 0x1000989, voidsymbol ] };
+key <AC03> { [ 0x10009bf, 0x10009c0, 0x1000987, voidsymbol ] };
+key <AC04> { [ 0x10009be, 0x1000985, 0x1000986, voidsymbol ] };
+key <AC05> { [ 0x10009cd, 0x1000964, voidsymbol, 0x1000965 ] };
+key <AC06> { [ 0x10009ac, 0x10009ad, 0x10009f0, voidsymbol ] };
+key <AC07> { [ 0x1000995, 0x1000996, voidsymbol, voidsymbol ] };
+key <AC08> { [ 0x10009a4, 0x10009a5, voidsymbol, voidsymbol ] };
+key <AC09> { [ 0x10009a6, 0x10009a7, voidsymbol, voidsymbol ] };
+key <AC10> { [ 0x100003b, 0x100003a, 0x100201b, 0x100201f ] };
+key <AC11> { [ 0x1002018, 0x1002019, 0x100201c, 0x100201d ] };
+key <BKSL> { [ 0x1000983, 0x10009ce, 0x1000027, 0x1000022 ] };
+key <AB01> { [ 0x1002013, 0x1002014, voidsymbol, 0x10009e2 ] };
+key <AB02> { [ 0x10009cb, 0x10009cc, 0x1000993, 0x10009d7 ] };
+key <AB03> { [ 0x10009c7, 0x10009c8, 0x100098f, 0x10009e0 ] };
+key <AB04> { [ 0x10009b0, 0x10009b2, 0x10009f1, 0x10009e3 ] };
+key <AB05> { [ 0x10009a8, 0x10009a3, voidsymbol, 0x10009c4 ] };
+key <AB06> { [ 0x10009b8, 0x10009b7, voidsymbol, voidsymbol ] };
+key <AB07> { [ 0x10009ae, 0x10009b6, voidsymbol, voidsymbol ] };
+key <AB08> { [ 0x100002c, 0x100003c, 0x1000324, 0x1002264 ] };
+key <AB09> { [ 0x100002e, 0x100003e, 0x10009bc, 0x1002265 ] };
+key <AB10> { [ 0x100002f, 0x100003f, voidsymbol, voidsymbol ] };
+
+modifier_map Shift { Shift_L, Shift_R };
+
+include "level3(ralt_switch_multikey)"
+};
+
